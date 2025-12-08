@@ -95,16 +95,18 @@ Mapped to a 0–100 score (higher = safer).
 ---
 ## Underwriter Agent Output
 Example structure:
-SUMMARY: \<business overview\>
 
-STRENGTHS:
+**SUMMARY**: \<business overview\>
+
+**STRENGTHS**:
 - \<item\>
   
-RISKS:
+**RISKS**:
 - \<item\>
 
-DECISION: APPROVE | DECLINE | REVIEW
-CONFIDENCE: 0.78
+**DECISION**: APPROVE | DECLINE | REVIEW
+
+**CONFIDENCE**: 0.78
 
 
 ---
