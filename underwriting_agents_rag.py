@@ -6,6 +6,7 @@ from typing import List, Dict, Any
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from generate_russell2000_businesses import generate_russell2000_businesses
 
 load_dotenv()
 client = OpenAI()  # reads OPENAI_API_KEY from env
@@ -55,44 +56,30 @@ class UnderwriterOutput:
 
 
 # =====================================================
-# 1. SYNTHETIC BUSINESS GENERATION
+# 1. BUSINESS DATA GENERATION
+#    Now using Russell 2000 based data
 # =====================================================
 
 def generate_sample_businesses(n: int = 20) -> pd.DataFrame:
-    industries = [
-        "Food & Beverage",
-        "Retail",
-        "Healthcare",
-        "Construction",
-        "Technology",
-        "Personal Services",
-    ]
-
-    data = []
-    rng = np.random.default_rng(42)
-
-    for i in range(n):
-        name = f"Business_{i+1}"
-        industry = rng.choice(industries)
-        revenue = rng.integers(80_000, 2_000_000)
-        debt = rng.integers(10_000, 800_000)
-        credit_score = rng.integers(580, 800)
-        rating = np.round(rng.uniform(2.5, 5.0), 1)
-        review_count = rng.integers(5, 1500)
-
-        data.append(
-            {
-                "name": name,
-                "industry": industry,
-                "revenue": float(revenue),
-                "debt": float(debt),
-                "credit_score": int(credit_score),
-                "google_rating": float(rating),
-                "review_count": int(review_count),
-            }
-        )
-
-    return pd.DataFrame(data)
+    """
+    Generate sample businesses using Russell 2000 companies.
+    This function is maintained for backward compatibility but now uses
+    the generate_russell2000_businesses() function.
+    
+    Args:
+        n: Number of businesses to generate (default: 20)
+    
+    Returns:
+        DataFrame with business data from Russell 2000 companies
+    """
+    # Use the Russell 2000 business generator
+    df = generate_russell2000_businesses(n=n, seed=42)
+    
+    # Remove the extra 'sector' and 'debt_to_revenue_ratio' columns to maintain
+    # backward compatibility with the existing UI code
+    columns_to_keep = ['name', 'industry', 'revenue', 'debt', 'credit_score', 
+                       'google_rating', 'review_count']
+    return df[columns_to_keep]
 
 
 # =====================================================
@@ -104,10 +91,14 @@ def _industry_risk_score(industry: str) -> float:
     table = {
         "Healthcare": 0.2,
         "Technology": 0.3,
+        "Financial Services": 0.35,
         "Retail": 0.5,
+        "Real Estate": 0.5,
         "Food & Beverage": 0.6,
         "Personal Services": 0.6,
+        "Industrial": 0.65,
         "Construction": 0.7,
+        "Energy": 0.75,
     }
     return table.get(industry, 0.5)
 
@@ -246,6 +237,38 @@ RAG_DOCS = [
         "text": (
             'Technology companies can scale quickly, with volatile revenue but high '
             "growth potential. Healthy cash flow and low leverage are positive signs."
+        ),
+    },
+    {
+        "id": "industry_financial_services",
+        "text": (
+            "Financial Services companies typically demonstrate stable cash flows and "
+            "strong capital management. Regulatory compliance and credit risk management "
+            "are critical factors. Lower default risk when well-capitalized."
+        ),
+    },
+    {
+        "id": "industry_industrial",
+        "text": (
+            "Industrial businesses often have cyclical revenue tied to economic conditions. "
+            "Equipment costs and working capital needs can be significant. Strong order "
+            "backlogs and long-term contracts are positive indicators."
+        ),
+    },
+    {
+        "id": "industry_real_estate",
+        "text": (
+            "Real Estate businesses depend on property values, occupancy rates, and "
+            "interest rate environments. Diversified portfolios and strong tenant "
+            "relationships reduce risk. Higher leverage is common but must be managed carefully."
+        ),
+    },
+    {
+        "id": "industry_energy",
+        "text": (
+            "Energy sector businesses face commodity price volatility and regulatory risks. "
+            "Stable long-term contracts and hedging strategies are positive factors. "
+            "Capital intensity and environmental compliance add complexity."
         ),
     },
     {
