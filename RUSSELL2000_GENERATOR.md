@@ -2,7 +2,7 @@
 
 ## Overview
 
-This script generates a realistic list of small businesses based on actual companies from the Russell 2000 index. The Russell 2000 is a stock market index that represents approximately 2,000 small-cap U.S. equities and serves as a benchmark for the small-cap segment of the U.S. equity universe.
+This script generates a realistic list of small businesses based on actual companies from the Russell 2000 index. The Russell 2000 is a stock market index that measures the performance of the smallest 2,000 companies in the Russell 3000 Index (companies ranked 1,001 to 3,000 by market capitalization), representing the small-cap segment of the U.S. equity universe.
 
 ## Features
 

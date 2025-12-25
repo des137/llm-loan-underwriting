@@ -275,8 +275,9 @@ def generate_russell2000_businesses(
     """
     Generate a realistic list of businesses based on Russell 2000 index companies.
     
-    The Russell 2000 is a small-cap stock market index that represents the bottom 2000
-    companies in the Russell 3000 Index. This function uses real company names from the
+    The Russell 2000 is a small-cap stock market index that measures the performance
+    of the smallest 2,000 companies in the Russell 3000 Index (companies ranked 1,001
+    to 3,000 by market capitalization). This function uses real company names from the
     Russell 2000 and generates realistic financial attributes based on industry profiles.
     
     Args:
@@ -329,7 +330,10 @@ def generate_russell2000_businesses(
     df = pd.DataFrame(data)
     
     # Add additional derived columns for analysis
-    df["debt_to_revenue_ratio"] = df["debt"] / df["revenue"]
+    # Use a small epsilon to avoid division by zero
+    df["debt_to_revenue_ratio"] = df.apply(
+        lambda row: row["debt"] / max(row["revenue"], 1.0), axis=1
+    )
     
     return df
 
