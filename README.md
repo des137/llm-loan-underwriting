@@ -67,11 +67,32 @@ The system evaluates a business using signals such as revenue, debt, credit scor
 
 ```yaml
 .
-├── app.py # Streamlit UI
-├── underwriting_agents_rag.py # Multi-agent + RAG logic
-├── requirements.txt # Python dependencies
+├── app.py                              # Streamlit UI
+├── underwriting_agents_rag.py          # Multi-agent + RAG logic
+├── generate_russell2000_businesses.py  # Russell 2000 business generator
+├── requirements.txt                    # Python dependencies
 ├── .gitignore
-└── README.md
+├── README.md
+└── RUSSELL2000_GENERATOR.md            # Business generator documentation
+```
+
+### Business Data Generator
+The project now includes a sophisticated business data generator based on actual Russell 2000 index companies. See [RUSSELL2000_GENERATOR.md](RUSSELL2000_GENERATOR.md) for detailed documentation.
+
+**Key Features:**
+- 100 real Russell 2000 company names
+- 10 industry categories with realistic financial profiles
+- Standalone CLI script or importable Python module
+- Generates CSV files with company data
+
+**Usage:**
+```bash
+# Generate 50 businesses
+python generate_russell2000_businesses.py 50
+
+# Or use as a module
+from generate_russell2000_businesses import generate_russell2000_businesses
+df = generate_russell2000_businesses(n=50)
 ```
 
 ---
