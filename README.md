@@ -1,4 +1,4 @@
-# AI Underwriting Demo — Multi‑Agent + RAG  
+# AI Underwriting Demo (Russell 2000) — Multi‑Agent + RAG 
 *A Streamlit application that simulates a small‑business underwriting workflow using LLM Agents + Retrieval‑Augmented Generation (RAG).*
 
 ---
